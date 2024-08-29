@@ -1,6 +1,7 @@
 import sys
 import pygame
 from settings import *
+from ship import Ship
 
 pygame.init()
 
@@ -12,6 +13,9 @@ class Program:
         self.clock = pygame.time.Clock()
         self.running = True
 
+        self.ship_group = pygame.sprite.Group()
+        self.player = Ship(self.ship_group)
+
     def run(self):
         while self.running:
             self.clock.tick(FPS)
@@ -20,7 +24,8 @@ class Program:
                     self.running = False
                     pygame.quit()
                     sys.exit()
-        pygame.display.update()
+            self.ship_group.draw(self.display)
+            pygame.display.update()
 
 
 if __name__ == '__main__':
