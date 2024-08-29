@@ -7,7 +7,10 @@ class Laser(pg.sprite.Sprite):
         self.image = pg.image.load('graphics/laser.png').convert_alpha()
         self.rect = self.image.get_rect(midbottom=pos)
 
-    def update(self):
-        self.rect.y -= 5
-        if self.rect.bottom < 0:
-            self.kill()
+        self.pos = pg.math.Vector2(self.rect.topleft)
+        self.direction = pg.math.Vector2(0, -1)
+        self.speed = 600
+
+    def update(self, dt):
+        self.pos += self.direction * self.speed * dt
+        self.rect.topleft = (round(self.pos.x), round(self.pos.y))

@@ -14,6 +14,7 @@ class Program:
         pg.display.set_caption(GAME_NAME)
         self.clock = pg.time.Clock()
         self.running = True
+        self.dt = 0
         # Grafika tła.
         self.bg_surf = pg.image.load("graphics/background.png").convert()
         # Grupy Sprite'ów.
@@ -25,7 +26,7 @@ class Program:
 
     def run(self):
         while self.running:
-            self.clock.tick(FPS)
+            self.dt = self.clock.tick(FPS) / 1000
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.running = False
@@ -37,7 +38,8 @@ class Program:
                         pg.quit()
                         sys.exit()
             # Update.
-            self.ship_group.update()
+            self.laser_group.update(self.dt)
+            self.ship_group.update(self.laser_group)
             # Grafika.
             self.display.blit(self.bg_surf, (0, 0))
             self.laser_group.draw(self.display)
