@@ -11,6 +11,13 @@ class Laser(pg.sprite.Sprite):
         self.direction = pg.math.Vector2(0, -1)
         self.speed = 600
 
-    def update(self, dt):
+    def meteor_collision(self, meteor_group):
+        if pg.sprite.spritecollide(self, meteor_group, True):
+            self.kill()
+
+    def update(self, dt, meteor_group):
         self.pos += self.direction * self.speed * dt
         self.rect.topleft = (round(self.pos.x), round(self.pos.y))
+        if self.rect.bottom < 0:
+            self.kill()
+        self.meteor_collision(meteor_group)

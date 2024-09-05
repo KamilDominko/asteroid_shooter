@@ -12,6 +12,7 @@ class Meteor(pg.sprite.Sprite):
         self.original_image = meteor_transformed
         self.image = meteor_transformed
         self.rect = self.image.get_rect(center=(self.__random_pos()))
+        self.mask = pg.mask.from_surface(self.image)
 
         self.pos = pg.math.Vector2(self.rect.topleft)
         self.direction = pg.math.Vector2(uniform(-0.5, 0.5), 1)
@@ -31,8 +32,11 @@ class Meteor(pg.sprite.Sprite):
         rotated_image = pg.transform.rotozoom(self.original_image, self.rotation, 1).convert_alpha()
         self.image = rotated_image
         self.rect = self.image.get_rect(center=self.rect.center)
+        self.mask = pg.mask.from_surface(self.image)
 
     def update(self, dt):
         self.pos += self.direction * self.speed * dt
         self.rect.topleft = (round(self.pos.x), round(self.pos.y))
         self.rotate(dt)
+        if self.rect.top > WINDOW_HEIGHT:
+            self.kill()

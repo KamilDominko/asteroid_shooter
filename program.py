@@ -47,8 +47,8 @@ class Program:
                     Meteor(self.meteor_group)
 
             # Update.
-            self.ship_group.update(self.laser_group)
-            self.laser_group.update(self.dt)
+            self.ship_group.update(self.laser_group, self.meteor_group)
+            self.laser_group.update(self.dt, self.meteor_group)
             self.meteor_group.update(self.dt)
             # Grafika.
             self.display.blit(self.bg_surf, (0, 0))

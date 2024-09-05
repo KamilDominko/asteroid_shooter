@@ -1,3 +1,4 @@
+import sys
 import pygame as pg
 
 from settings import *
@@ -9,6 +10,7 @@ class Ship(pg.sprite.Sprite):
         super().__init__(group)
         self.image = pg.image.load("graphics/ship.png").convert_alpha()
         self.rect = self.image.get_rect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+        self.mask = pg.mask.from_surface(self.image)
         self.can_shoot = True
         self.last_shoot = 0
 
@@ -24,6 +26,12 @@ class Ship(pg.sprite.Sprite):
             elif not self.can_shoot and pg.time.get_ticks() - self.last_shoot > 1000:
                 self.can_shoot = True
 
-    def update(self, laser_group):
+    def meteor_collision(self, meteor_group):
+        if pg.sprite.spritecollide(self, meteor_group, False, pg.sprite.collide_mask):
+            pg.quit()
+            sys.exit()
+
+    def update(self, laser_group, meteor_group):
         self.input_position()
         self.laser_shoot(laser_group)
+        self.meteor_collision(meteor_group)
