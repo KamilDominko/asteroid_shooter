@@ -4,6 +4,7 @@ import pygame as pg
 from settings import *
 from ship import Ship
 from laser import Laser
+from meteor import Meteor
 
 pg.init()
 
@@ -20,9 +21,12 @@ class Program:
         # Grupy Sprite'ów.
         self.ship_group = pg.sprite.GroupSingle()
         self.laser_group = pg.sprite.Group()
+        self.meteor_group = pg.sprite.Group()
         # Gracz.
         self.player = Ship(self.ship_group)
-        self.laser = Laser(self.laser_group, self.player.rect.midtop)
+        # Meteor Timer.
+        self.meteor_timer = pg.event.custom_type()
+        pg.time.set_timer(self.meteor_timer, 400)
 
     def run(self):
         while self.running:
@@ -37,13 +41,18 @@ class Program:
                         self.running = False
                         pg.quit()
                         sys.exit()
+                if event.type == self.meteor_timer:
+                    Meteor(self.meteor_group)
+
             # Update.
-            self.laser_group.update(self.dt)
             self.ship_group.update(self.laser_group)
+            self.laser_group.update(self.dt)
+            self.meteor_group.update(self.dt)
             # Grafika.
             self.display.blit(self.bg_surf, (0, 0))
-            self.laser_group.draw(self.display)
             self.ship_group.draw(self.display)
+            self.laser_group.draw(self.display)
+            self.meteor_group.draw(self.display)
             pg.display.update()
 
 
