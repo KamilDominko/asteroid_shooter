@@ -3,8 +3,8 @@ import pygame as pg
 
 from settings import *
 from ship import Ship
-from laser import Laser
 from meteor import Meteor
+from score import Score
 
 pg.init()
 
@@ -27,6 +27,8 @@ class Program:
         # Meteor Timer.
         self.meteor_timer = pg.event.custom_type()
         pg.time.set_timer(self.meteor_timer, 400)
+        # Score.
+        self.score = Score()
 
     def run(self):
         while self.running:
@@ -50,6 +52,7 @@ class Program:
             self.meteor_group.update(self.dt)
             # Grafika.
             self.display.blit(self.bg_surf, (0, 0))
+            self.score.display(self.display)
             self.ship_group.draw(self.display)
             self.laser_group.draw(self.display)
             self.meteor_group.draw(self.display)
