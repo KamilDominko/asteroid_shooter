@@ -29,6 +29,9 @@ class Program:
         pg.time.set_timer(self.meteor_timer, 400)
         # Score.
         self.score = Score()
+        # Music.
+        self.music = pg.mixer.Sound("sounds/music.wav")
+        self.music.play(-1)
 
     def run(self):
         while self.running:

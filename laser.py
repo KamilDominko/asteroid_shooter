@@ -11,8 +11,11 @@ class Laser(pg.sprite.Sprite):
         self.direction = pg.math.Vector2(0, -1)
         self.speed = 600
 
+        self.explosion_sound = pg.mixer.Sound('sounds/explosion.wav')
+
     def meteor_collision(self, meteor_group):
         if pg.sprite.spritecollide(self, meteor_group, True):
+            self.explosion_sound.play()
             self.kill()
 
     def update(self, dt, meteor_group):

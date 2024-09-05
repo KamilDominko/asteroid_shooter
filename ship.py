@@ -13,6 +13,7 @@ class Ship(pg.sprite.Sprite):
         self.mask = pg.mask.from_surface(self.image)
         self.can_shoot = True
         self.last_shoot = 0
+        self.laser_sound = pg.mixer.Sound("sounds/laser.ogg")
 
     def input_position(self):
         self.rect.center = pg.mouse.get_pos()
@@ -21,9 +22,10 @@ class Ship(pg.sprite.Sprite):
         if pg.mouse.get_pressed()[0]:
             if self.can_shoot:
                 Laser(laser_group, self.rect.midtop)
+                self.laser_sound.play()
                 self.can_shoot = False
                 self.last_shoot = pg.time.get_ticks()
-            elif not self.can_shoot and pg.time.get_ticks() - self.last_shoot > 1000:
+            elif not self.can_shoot and pg.time.get_ticks() - self.last_shoot > 500:
                 self.can_shoot = True
 
     def meteor_collision(self, meteor_group):
